@@ -1,27 +1,28 @@
 var check = function(word) {
-		var total = 0;
-		var arr = word.toLowerCase().split(/\s*/);
-		var patterns = [/[aeioulnrst]/, /[dg]/, /[bcmp]/, /[fhvwy]/, /[k]/, /[jx]/, /[qz]/];
+  var total = 0;
+	var letters = word.toLowerCase().split(/\s*/);
+	var pattern = [/[aeioulnrst]/, /[dg]/, /[bcmp]/, /[fhvwy]/, /[k]/, /[jx]/, /[qz]/];
+	var score = [1, 2, 3, 4, 5, 8, 10];
+	
+	letters.forEach(function(letter) {
+	
+		for (var i = 0; i < score.length; i++) {
+			total += pattern[i].test(letter) ? score[i] : 0;
+    }
 		
-		for (var i = 0; i < arr.length; i++) {
-		
-				patterns.forEach(function(pattern, ind) {
-						total += (pattern.test(arr[i]) && ind <= 4) ? ind + 1 : (pattern.test(arr[i]) && ind === 5) ? 8 : (pattern.test(arr[i]) && ind === 6) ? 10 : 0;
-				});
-			
-		}
-		return total;
+  });
+	return total;
 }
 
 $(document).ready(function() {
-		$("form#scrabble").submit(function(event) {
-				var word = $("input#word").val().trim();
-				var result = check(word);
+	$("form#scrabble").submit(function(event) {
+		var word = $("input#word").val().trim();
+		var result = check(word);
 				
-				$(".points").text(result);
-				$(":input").val("");
-				$("#result").show();
+		$(".points").text(result);
+		$(":input").val("");
+		$("#result").show();
 				
-				event.preventDefault();
-		});
+		event.preventDefault();
+	});
 });
